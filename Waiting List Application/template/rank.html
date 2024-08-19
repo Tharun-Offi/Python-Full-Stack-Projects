@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Top 10 Rankings</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+        :root{
+            --primary: #FFD700;
+            --secondary: white;
+            --background: #0000003f;
+        }
+        *{
+            text-decoration: none;
+            font-family: "Montserrat", sans-serif;
+            border: none;
+            outline: none;
+            color: var(--secondary);
+            padding: 0;
+            margin: 0;
+        }
+        body{
+            display: flex;
+            flex-direction: column;
+            justify-content: start;
+            align-items: center;
+            min-height: 100vh;
+            background: url('/static/bg.jpg') no-repeat center center;
+            background-size: cover;
+            position: relative;
+            backdrop-filter: brightness(40%);
+        }
+        .container{
+            padding: 5% 0;
+            margin: 5% 20%;
+            background: #f3f3f333;
+            backdrop-filter: blur(5px);
+            /* border: 0.2px solid #f3f3f3; */
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: start;
+            flex-wrap: wrap;
+            box-shadow: 0 0 20px 1px rgba(255, 255, 255, 0.479);
+        }
+        h1{
+            color: var(--primary);
+            margin-bottom: 50px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            padding: 8px 75px;
+            text-align: left;
+            border-bottom: none;
+        }
+        th {
+            background-color: var(--background);
+        }
+        .back{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 400px;
+            padding: 15px;
+        }
+        a{
+            color: var(--primary);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Top 10 Rankings</h1>
+        <table id="rankingTable">
+            <thead>
+                <tr>
+                    <th>Position</th>
+                    <th>Email</th>
+                    <th>Referrals</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Rankings will be dynamically added here -->
+            </tbody>
+        </table>
+        <div class="back"><p>Want to make another Pre-Order</p><p>-></p><a href="/">Click Here</a></div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('/top10')
+                .then(response => response.json())
+                .then(data => {
+                    const rankingTable = document.getElementById('rankingTable').getElementsByTagName('tbody')[0];
+                    data.forEach((item, index) => {
+                        const row = rankingTable.insertRow();
+                        const positionCell = row.insertCell(0);
+                        const emailCell = row.insertCell(1);
+                        const referralsCell = row.insertCell(2);
+
+                        positionCell.textContent = item.position;
+                        emailCell.textContent = item.email;
+                        referralsCell.textContent = item.referral_code;
+                    });
+                })
+                .catch(error => console.error('Error fetching top 10 rankings:', error));
+        });
+    </script>
+</body>
+</html>
